@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>RonTech Flow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://awsqwdexuulygqbmjrnh.supabase.co"</script>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="home">
+
+<!-- NAV -->
+<nav>
+  <div class="logo-container">
+    <img src="img/logo2.png">
+  </div>
+
+  <div class="nav-right">
+    <span id="userLabel"></span>
+    <button id="settingsBtn" class="settings-btn" onclick="openSettings()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"/>
+        <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V22a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-.4-1.1 1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.82.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.1-.4 1.7 1.7 0 0 0 .6-1A1.7 1.7 0 0 0 3.46 6.4l-.06-.06A2 2 0 1 1 6.23 3.5l.06.06A1.7 1.7 0 0 0 8 4.6c.37 0 .73-.12 1-.34A1.7 1.7 0 0 0 9.4 3.2V3a2 2 0 1 1 4 0v.1c0 .4.15.78.4 1.1.27.22.63.34 1 .34a1.7 1.7 0 0 0 1.82-.34l.06-.06A2 2 0 1 1 20.5 6.23l-.06.06A1.7 1.7 0 0 0 19.4 8c0 .37.12.73.34 1 .22.27.6.4 1.1.4H22a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.1.4c-.27.27-.4.63-.4 1z"/>
+      </svg>
+    </button>    <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Gestisci le spedizioni in un CLICK</h1>
+  <p>RonTech Flow semplifica il tracking e la gestione logistica.</p>
+  <button class="primary" onclick="openModal()">Inizia ora</button>
+</section>
+
+<!-- VIDEO DEMO -->
+<div id="demoSection" class="demo-video-container">
+
+  <div class="volume-vertical">
+    <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <video id="demoVideo" class="demo-video" src="img/demo.mp4"></video>
+
+
+
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardPanel" class="dashboard-container hidden">
+
+  <h2 class="dashboard-title">Dashboard</h2>
+
+  <div class="stats">
+    <div class="card active" id="totaliCard">
+      <span>Totali</span><h3 id="totali">0</h3>
+    </div>
+
+    <div class="card" id="transitoCard">
+      <span>In transito</span><h3 id="transito">0</h3>
+    </div>
+
+    <div class="card" id="consegnateCard">
+      <span>Consegnate</span><h3 id="consegnate">0</h3>
+    </div>
+  </div>
+
+  <div class="actions">
+    <input id="searchInput" class="search-input" placeholder="Cerca ordine...">
+    <button class="add-btn">+</button>
+  </div>
+
+  <div id="ordersList" class="orders-list"></div>
+
+
+</div>
+
+<!-- MODAL -->
+<div id="authModal" class="modal">
+  <div class="modal-box">
+
+    <div class="tabs">
+  <div class="pill" id="pill"></div>
+  <button id="loginTab" class="active" onclick="switchTab(0)">Login</button>
+  <button id="registerTab" onclick="switchTab(1)">Register</button>
+</div>
+
+    <div id="loginForm" class="form active">
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPass" placeholder="Password">
+      <button onclick="login()">Accedi</button>
+    </div>
+
+    <div id="registerForm" class="form">
+      <input type="email" id="regEmail" placeholder="Email">
+      <input type="password" id="regPass" placeholder="Password">
+      <input type="text" id="regCompany" placeholder="Nome azienda">
+      <button onclick="doRegister()">Registrati</button>
+    </div>
+
+  </div>
+</div>
+<div id="settingsModal" class="modal">
+  <div class="modal-box settings-box">
+
+    <h3 class="settings-title">Impostazioni</h3>
+
+    <div class="settings-item">
+      <span>Cookie analytics</span>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-item">
+      <span>Notifiche</span>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-item">
+      <span>Dark mode</span>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+  </div>
+</div>
+<div id="orderModal" class="modal">
+  <div class="modal-box">
+    <!-- HTML -->
+
+
+    <h3 class="settings-title">Ordine</h3>
+
+    <div class="form active">
+      <input type="text" id="orderCompany" placeholder="Compagnia">
+      <input type="text" id="orderDestination" placeholder="Destinazione">
+
+      <label class="modal-field-label">Data di consegna</label>
+      <input type="date" id="orderDeliveryDate">
+
+      <div id="orderStatusCustom" class="custom-select">
+  <div class="select-header">Programmato</div>
+
+  <div class="select-list">
+    <div data-value="programmato">Programmato</div>
+    <div data-value="transito">In transito</div>
+    <div data-value="consegnato">Consegnato</div>
+  </div>
+</div>
+
+
+      <button onclick="createOrder()">Crea ordine</button>
+    </div>
+
+  </div>
+</div>
+<div id="orderDetailsModal" class="modal">
+  <div class="modal-box">
+
+    <h3 id="detailTitle">Ordine</h3>
+
+    <p><strong>ID:</strong> <span id="detailId"></span></p>
+
+    <label>Compagnia</label>
+    <input type="text" id="detailCompanyInput">
+
+    <label>Destinazione</label>
+    <input type="text" id="detailDestinationInput">
+
+    <label>Data di consegna</label>
+    <input type="date" id="detailDeliveryDate">
+
+    <label>Stato</label>
+    <div id="detailStatusCustom" class="custom-select">
+      <div class="select-header">Programmato</div>
+
+      <div class="select-list">
+        <div data-value="programmato">Programmato</div>
+        <div data-value="transito">In transito</div>
+        <div data-value="consegnato">Consegnato</div>
+      </div>
+    </div>
+
+    <label>Note interne</label>
+    <textarea id="detailNote" placeholder="Scrivi una nota..."></textarea>
+
+    <button class="save-fab" onclick="saveOrderChanges()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <!-- check moderno -->
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </button>
+    <div id="saveFeedback" class="save-feedback">
+  <div class="checkmark"></div>
+  <span>Salvato</span>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+<div class="bg-hex"></div>
+<div id="toastContainer"></div>
+<script src="script.js"></script>
+<div id="trashBin" aria-label="Cestino ordini">
+  <svg class="bin-svg" viewBox="0 0 64 64" aria-hidden="true">
+    <g class="bin-lid-group">
+      <rect class="bin-handle" x="26" y="6" width="12" height="3" rx="1.5"/>
+      <rect class="bin-lid" x="10" y="12" width="44" height="5" rx="2.5"/>
+    </g>
+    <g class="bin-body-group">
+      <path class="bin-body" d="M16 20 L48 20 L45 56 Q45 60 41 60 L23 60 Q19 60 19 56 Z"/>
+      <line class="bin-line" x1="26" y1="27" x2="26" y2="53"/>
+      <line class="bin-line" x1="32" y1="27" x2="32" y2="53"/>
+      <line class="bin-line" x1="38" y1="27" x2="38" y2="53"/>
+    </g>
+  </svg>
+</div>
+
+</body>
+</html>
